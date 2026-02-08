@@ -3,109 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AprovaçãoElite | Crédito Corporativo Transparente</title>
+    <title>AprovaçãoElite | Crédito Corporativo Profissional</title>
     
+    <!-- Scripts Principais -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+                    colors: {
+                        elite: {
+                            50: '#ecfdf5',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            900: '#064e3b',
+                        }
+                    }
+                }
+            }
+        }
+
         function creditoApp() {
             return {
                 scrolled: false,
+                step: 1,
                 valor: 75000.00,
-                valorInput: '75.000',
+                valorInput: 'R$ 75.000,00',
                 prazo: 24,
-                bancoPrincipal: '',
-                tipoDocumento: 'cnpj',
                 mostrarMaisPrazos: false,
                 whatsappNum: '5511954802338',
                 processando: false,
+                aceitouTermos: false,
                 
                 form: {
-                    documento: '',
-                    whatsapp: ''
+                    cnpj: '',
+                    dataAbertura: '',
+                    faturamentoFaixa: '',
+                    nomeCompleto: '',
+                    telefone: '',
+                    email: '',
+                    bancoRecebimentoPJ: 'Itaú',
+                    tempoContaPJ: '1y'
                 },
 
                 bancosInstituicoes: [
-                    'Itaú PJ', 'Bradesco PJ', 'Santander PJ', 'Banco do Brasil', 'Caixa PJ', 
-                    'Nubank Business', 'Inter Empresas', 'Stone (Maquininha)', 'PagBank', 
-                    'Mercado Pago', 'C6 Bank', 'BTG Pactual', 'Safra', 'Cora', 'Sicoob'
+                    'Itaú', 'Bradesco', 'Santander', 'Banco do Brasil', 'Caixa', 
+                    'Nubank', 'Inter', 'Stone', 'PagBank', 'Mercado Pago', 'C6 Bank', 'BTG Pactual'
                 ],
 
                 prazosPadrao: [12, 24, 36],
                 prazosExtras: [48, 60, 72],
 
-                // Lista de 34 comentários positivos sem aspas duplas internas
-                depoimentos: [
-                    { nome: "Marcelo Junqueira", local: "São Paulo, SP", texto: "Processo extremamente profissional. O simulador bate exatamente com o contrato assinado.", cargo: "Franqueado" },
-                    { nome: "Ana Cláudia Souza", local: "Curitiba, PR", texto: "O fato de não pedirem nada antecipado me deu a confiança que eu precisava.", cargo: "E-commerce" },
-                    { nome: "Felipe Guedes", local: "Belo Horizonte, MG", texto: "Em poucas horas um consultor especializado me chamou. Transparência nota 10.", cargo: "Logística" },
-                    { nome: "Ricardo Alves", local: "Rio de Janeiro, RJ", texto: "Consegui o capital de giro para minha oficina em menos de 48 horas. Recomendo muito.", cargo: "Serviços" },
-                    { nome: "Juliana Costa", local: "Fortaleza, CE", texto: "Atendimento humano e direto ao ponto. Sem as enrolações dos bancos tradicionais.", cargo: "Varejo" },
-                    { nome: "Marcos Oliveira", local: "Porto Alegre, RS", texto: "Taxas realmente competitivas e processo totalmente digital. Facilitou demais minha vida.", cargo: "Tecnologia" },
-                    { nome: "Patrícia Lima", local: "Salvador, BA", texto: "Excelente suporte. Tiraram todas as minhas dúvidas antes de eu assinar o contrato.", cargo: "Estética" },
-                    { nome: "Bruno Rocha", local: "Brasília, DF", texto: "Transparência total desde a simulação até a liberação do dinheiro na conta.", cargo: "Consultoria" },
-                    { nome: "Camila Ferreira", local: "Manaus, AM", texto: "Fiquei surpresa com a rapidez. O crédito caiu na conta da empresa super rápido.", cargo: "Alimentação" },
-                    { nome: "Thiago Santos", local: "Recife, PE", texto: "Melhor opção para quem precisa de crédito PJ sem burocracia excessiva.", cargo: "Indústria" },
-                    { nome: "Fernanda Melo", local: "Goiânia, GO", texto: "Tudo feito pelo celular de forma prática. O acompanhamento via WhatsApp é nota mil.", cargo: "Moda" },
-                    { nome: "Lucas Pereira", local: "Vitória, ES", texto: "Empresa séria que respeita o empreendedor. As parcelas couberam no meu orçamento.", cargo: "Turismo" },
-                    { nome: "Amanda Silva", local: "Belém, PA", texto: "Simulei num dia e no outro já estava com a proposta aprovada. Muito eficiente.", cargo: "Educação" },
-                    { nome: "Gabriel Barbosa", local: "Florianópolis, SC", texto: "O sistema de assinatura digital é muito seguro. Recomendo pela praticidade.", cargo: "Design" },
-                    { nome: "Beatriz Nogueira", local: "Cuiabá, MT", texto: "Crédito justo para quem está querendo expandir o negócio. Valeu cada centavo.", cargo: "Saúde" },
-                    { nome: "Rodrigo Mendes", local: "Natal, RN", texto: "Atendimento personalizado que entende as necessidades da pequena empresa.", cargo: "Eventos" },
-                    { nome: "Letícia Ramos", local: "João Pessoa, PB", texto: "Fui muito bem orientada durante todo o processo. Empresa de extrema confiança.", cargo: "Jurídico" },
-                    { nome: "André Luiz", local: "Teresina, PI", texto: "Finalmente uma plataforma que não dificulta o acesso ao crédito para o PJ.", cargo: "Construção" },
-                    { nome: "Vanessa Dias", local: "Aracaju, SE", texto: "Aprovado sem taxas escondidas. O que simulei foi exatamente o que paguei.", cargo: "Pets" },
-                    { nome: "Igor Martins", local: "Campo Grande, MS", texto: "Processo limpo e rápido. A melhor experiência financeira que já tive como empresário.", cargo: "TI" },
-                    { nome: "Daniela Xavier", local: "Maceió, AL", texto: "Rapidez e segurança definem. Recomendo para todos os meus parceiros de negócio.", cargo: "Arquitetura" },
-                    { nome: "Samuel Viana", local: "São Luís, MA", texto: "Capital liberado com taxa de juros muito menor do que meu banco oferecia.", cargo: "Auto Peças" },
-                    { nome: "Clara Antunes", local: "Palmas, TO", texto: "Excelente alternativa aos grandes bancos. Atendimento rápido e eficiente.", cargo: "Gráfica" },
-                    { nome: "Renato Souza", local: "Macapá, AP", texto: "O simulador é muito prático. Ajuda a planejar o pagamento sem surpresas.", cargo: "Academia" },
-                    { nome: "Jéssica Lemos", local: "Porto Velho, RO", texto: "Confiança total. Recebi o suporte necessário em cada etapa da solicitação.", cargo: "Padaria" },
-                    { nome: "Hugo Carvalho", local: "Rio Branco, AC", texto: "Praticidade do início ao fim. O crédito PJ que o Brasil precisava.", cargo: "Farmácia" },
-                    { nome: "Tatiane Nunes", local: "Boa Vista, RR", texto: "Sem letras miúdas. Contrato claro e dinheiro na conta conforme o prometido.", cargo: "Brinquedos" },
-                    { nome: "Fábio Junior", local: "Campinas, SP", texto: "Gostei muito da agilidade no atendimento pelo WhatsApp. Muito direto.", cargo: "Segurança" },
-                    { nome: "Larissa Gomes", local: "Santos, SP", texto: "Facilidade incrível para enviar os documentos. Tudo digital e seguro.", cargo: "Móveis" },
-                    { nome: "Sandro Lima", local: "Uberlândia, MG", texto: "O melhor correspondente bancário que já utilizei. Nota dez em tudo.", cargo: "Transporte" },
-                    { nome: "Mônica Silva", local: "Ribeirão Preto, SP", texto: "Sempre indico para outros lojistas. O crédito é liberado sem dor de cabeça.", cargo: "Presentes" },
-                    { nome: "Eduardo Vaz", local: "Londrina, PR", texto: "Suporte excelente. Eles realmente buscam a melhor condição para a empresa.", cargo: "Agro" },
-                    { nome: "Priscila Rocha", local: "Joinville, SC", texto: "Fiquei muito satisfeita com a taxa de aprovação. Empresa muito justa.", cargo: "Inovação" },
-                    { nome: "Gustavo Paiva", local: "Sorocaba, SP", texto: "Capital rápido para aproveitar uma oportunidade de estoque. Me salvou!", cargo: "Distribuidora" }
-                ],
-
                 init() {
-                    window.addEventListener('scroll', () => {
-                        this.scrolled = window.scrollY > 50;
-                    });
-                    
-                    this.$watch('valor', (val) => {
-                        this.valorInput = this.formatNumber(val);
-                    });
-
-                    if (window.lucide) window.lucide.createIcons();
+                    window.addEventListener('scroll', () => { this.scrolled = window.scrollY > 50; });
+                    this.$nextTick(() => { if (window.lucide) window.lucide.createIcons(); });
                 },
 
-                formatNumber(v) {
-                    return Math.floor(v).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                maskCNPJ(e) {
+                    let v = e.target.value.replace(/\D/g, "").substring(0, 14);
+                    v = v.replace(/^(\d{2})(\d)/, "$1.$2");
+                    v = v.replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3");
+                    v = v.replace(/\.(\d{3})(\d)/, ".$1/$2");
+                    v = v.replace(/(\d{4})(\d)/, "$1-$2");
+                    this.form.cnpj = v;
                 },
 
-                handleInput(e) {
-                    let val = e.target.value.replace(/\D/g, '');
-                    if (val === '') val = '0';
-                    let num = parseInt(val);
-                    if (num > 250000) num = 250000;
-                    this.valor = num;
-                    this.valorInput = this.formatNumber(num);
+                maskPhone(e) {
+                    let v = e.target.value.replace(/\D/g, "").substring(0, 11);
+                    v = v.replace(/^(\d{2})(\d)/g, "($1) $2");
+                    v = v.replace(/(\d)(\d{4})$/, "$1-$2");
+                    this.form.telefone = v;
+                },
+
+                handleValorInput(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    let floatValue = parseFloat(value) / 100;
+                    if (isNaN(floatValue)) floatValue = 0;
+                    if (floatValue > 2000000) floatValue = 2000000;
+                    this.valor = floatValue;
+                    this.valorInput = this.formatCurrency(floatValue);
+                },
+
+                syncSlider(e) {
+                    this.valor = parseFloat(e.target.value);
+                    this.valorInput = this.formatCurrency(this.valor);
                 },
 
                 formatCurrency(v) {
                     return new Intl.NumberFormat('pt-BR', { 
                         style: 'currency', 
                         currency: 'BRL',
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2 
+                        minimumFractionDigits: 2 
                     }).format(v);
                 },
 
@@ -113,25 +107,56 @@
                     const taxaMensal = 0.0129;
                     const n = parseInt(this.prazo);
                     const p = parseFloat(this.valor) || 0;
+                    if(p === 0) return { parcela: 0, total: 0 };
                     const parcela = (p * taxaMensal * Math.pow(1 + taxaMensal, n)) / (Math.pow(1 + taxaMensal, n) - 1);
                     return { parcela: parcela || 0, total: (parcela * n) || 0 };
                 },
 
-                enviarPedido() {
-                    if (!this.form.documento || !this.form.whatsapp || !this.bancoPrincipal) {
-                        return;
+                get canGoNext() {
+                    if (this.step === 1) return this.valor >= 10000;
+                    if (this.step === 2) return this.form.cnpj.length >= 18 && this.form.dataAbertura && this.form.faturamentoFaixa;
+                    if (this.step === 3) return this.form.nomeCompleto.length > 5 && this.form.telefone.length >= 14 && this.form.email.includes('@');
+                    return true;
+                },
+
+                proximoPasso() {
+                    if(this.canGoNext && this.step < 4) {
+                        this.step++;
+                        this.scrollToForm();
+                        this.$nextTick(() => { window.lucide.createIcons(); });
                     }
+                },
+
+                voltarPasso() {
+                    if(this.step > 1) {
+                        this.step--;
+                        this.scrollToForm();
+                        this.$nextTick(() => { window.lucide.createIcons(); });
+                    }
+                },
+
+                scrollToForm() {
+                    const el = document.getElementById('main-form');
+                    window.scrollTo({ top: el.offsetTop - 100, behavior: 'smooth' });
+                },
+
+                enviarPedido() {
+                    if(!this.aceitouTermos) return;
                     this.processando = true;
                     setTimeout(() => {
-                        const msg = `*SOLICITAÇÃO DE CRÉDITO - PROTOCOLO ${Math.floor(Math.random() * 900000) + 100000}*%0A%0A` +
-                            `*DETALHES:*%0A` +
-                            `- Valor: ${this.formatCurrency(this.valor)}%0A` +
-                            `- Prazo: ${this.prazo} meses%0A` +
-                            `- Parcela: ${this.formatCurrency(this.resultado.parcela)}%0A%0A` +
-                            `*DADOS:*%0A` +
-                            `- ${this.tipoDocumento.toUpperCase()}: ${this.form.documento}%0A` +
-                            `- Instituição: ${this.bancoPrincipal}%0A%0A` +
-                            `_Análise Segura._`;
+                        const msg = `*NOVA SOLICITAÇÃO DE CRÉDITO ELITE*%0A%0A` +
+                            `*--- SIMULAÇÃO ---*%0A` +
+                            `*Valor:* ${this.formatCurrency(this.valor)}%0A` +
+                            `*Prazo:* ${this.prazo} meses%0A` +
+                            `*Parcela:* ${this.formatCurrency(this.resultado.parcela)}%0A%0A` +
+                            `*--- EMPRESA ---*%0A` +
+                            `*CNPJ:* ${this.form.cnpj}%0A` +
+                            `*Faturamento:* ${this.form.faturamentoFaixa}%0A` +
+                            `*Banco:* ${this.form.bancoRecebimentoPJ}%0A%0A` +
+                            `*--- CONTATO ---*%0A` +
+                            `*Nome:* ${this.form.nomeCompleto}%0A` +
+                            `*WhatsApp:* ${this.form.telefone}%0A` +
+                            `*E-mail:* ${this.form.email}`;
 
                         window.open(`https://wa.me/${this.whatsappNum}?text=${msg}`, '_blank');
                         this.processando = false;
@@ -143,216 +168,304 @@
 
     <style>
         :root { font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background-color: #f8fafc; color: #1e293b; overflow-x: hidden; }
-        .card-shadow { box-shadow: 0 20px 50px -12px rgba(15, 23, 42, 0.08); }
-        
-        input[type=range] { -webkit-appearance: none; background: transparent; }
-        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 6px; cursor: pointer; background: #e2e8f0; border-radius: 10px; }
-        input[type=range]::-webkit-slider-thumb { height: 28px; width: 28px; border-radius: 50%; background: #059669; cursor: pointer; -webkit-appearance: none; margin-top: -11px; box-shadow: 0 4px 10px rgba(5, 150, 105, 0.3); border: 4px solid white; }
-        
+        body { background-color: #f1f5f9; color: #1e293b; }
         [x-cloak] { display: none !important; }
-
-        .input-money {
-            background: transparent;
-            border: none;
-            outline: none;
-            text-align: right;
-            font-weight: 900;
-            color: #0f172a;
+        
+        .card-shadow { box-shadow: 0 40px 100px -20px rgba(15, 23, 42, 0.12); }
+        
+        /* Alteração: Bordas pretas em tudo que é clicável ou preenchível */
+        .input-field {
+            @apply w-full bg-white border-2 border-black rounded-2xl py-4 px-5 text-slate-900 font-bold 
+            placeholder:text-slate-400 outline-none transition-all duration-300;
+        }
+        .input-field:focus {
+            @apply ring-4 ring-emerald-500/20 border-emerald-600;
         }
 
-        input, select, button { font-size: 16px !important; }
+        .selectable-button {
+            @apply py-6 rounded-3xl font-black text-sm transition-all flex flex-col items-center gap-1 border-2 border-black bg-white;
+        }
+
+        .label-field {
+            @apply text-[12px] font-black text-black uppercase tracking-[0.1em] mb-3 block ml-1;
+        }
+
+        /* Slider de Valor */
+        input[type=range] { -webkit-appearance: none; background: transparent; }
+        input[type=range]::-webkit-slider-runnable-track { 
+            width: 100%; height: 10px; cursor: pointer; background: #000; border-radius: 10px; 
+        }
+        input[type=range]::-webkit-slider-thumb { 
+            height: 32px; width: 32px; border-radius: 50%; background: #10b981; cursor: pointer; 
+            -webkit-appearance: none; margin-top: -11px; 
+            border: 4px solid #000; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .step-enter { animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body x-data="creditoApp()" class="antialiased">
 
-    <!-- Top Security Bar -->
-    <div class="bg-slate-900 py-2.5 px-4">
-        <div class="container mx-auto flex flex-col md:flex-row justify-center md:justify-between items-center text-[10px] md:text-[11px] font-semibold tracking-wide text-slate-300 uppercase text-center gap-2 md:gap-0">
-            <span class="flex items-center gap-2"><i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i> Conexão Segura SSL 256-bit</span>
-            <span class="hidden sm:block uppercase">Correspondente Autorizado • BACEN Res. 3.954</span>
+    <!-- Header Status -->
+    <div class="bg-black py-2.5 px-4 sticky top-0 z-[110]">
+        <div class="container mx-auto text-[10px] font-bold tracking-[0.2em] text-white uppercase text-center flex items-center justify-center gap-3">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            AMBIENTE 100% SEGURO E CRIPTOGRAFADO
         </div>
     </div>
 
-    <!-- Navigation -->
-    <nav class="sticky top-0 w-full z-[100] transition-all duration-300 bg-white" 
-         :class="scrolled ? 'border-b border-slate-100 py-2 shadow-sm' : 'py-4 md:py-6'">
-        <div class="container mx-auto px-4 md:px-6 flex justify-between items-center">
-            <div class="flex items-center gap-2 md:gap-3">
-                <div class="w-8 h-8 md:w-10 md:h-10 bg-emerald-600 rounded-lg flex items-center justify-center shadow-lg shadow-emerald-600/20">
-                    <i data-lucide="trending-up" class="text-white w-5 h-5 md:w-6 md:h-6"></i>
+    <!-- Navegação -->
+    <nav class="w-full z-[100] transition-all duration-300 bg-white border-b-2 border-black" 
+         :class="scrolled ? 'py-3 shadow-md' : 'py-6 md:py-8'">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-black rounded-2xl flex items-center justify-center">
+                    <i data-lucide="landmark" class="text-white w-6 h-6"></i>
                 </div>
                 <div>
-                    <span class="text-lg md:text-xl font-extrabold text-slate-900 tracking-tight block leading-none uppercase">Aprovação<span class="text-emerald-600 font-light">Elite</span></span>
-                    <span class="text-[8px] md:text-[9px] text-slate-400 font-bold uppercase tracking-[0.2em]">Crédito Institucional</span>
+                    <span class="text-2xl font-black text-black tracking-tight block leading-none">APROVAÇÃO<span class="text-emerald-600">ELITE</span></span>
+                    <span class="text-[10px] text-black font-bold uppercase tracking-[0.3em]">Business Banking</span>
                 </div>
             </div>
-            <a href="https://wa.me/5511954802338" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 md:px-6 py-2 md:py-2.5 rounded-full text-[10px] md:text-xs font-bold transition-all shadow-md">
-                ATENDIMENTO
+            <a href="#main-form" class="hidden sm:block bg-black text-white px-8 py-4 rounded-2xl text-[11px] font-black hover:bg-emerald-600 active:scale-95 transition-all uppercase tracking-widest border-2 border-black">
+                Simular Agora
             </a>
+            <button class="sm:hidden text-black p-2">
+                <i data-lucide="menu" class="w-7 h-7"></i>
+            </button>
         </div>
     </nav>
 
-    <main class="py-6 md:py-16">
-        <div class="container mx-auto px-4 md:px-6">
-            
-            <!-- Hero -->
-            <div class="max-w-4xl mx-auto text-center mb-8 md:mb-16">
-                <div class="inline-flex items-center gap-2 px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full border border-emerald-100 mb-6 shadow-sm">
-                    <i data-lucide="verified" class="w-4 h-4"></i>
-                    <span class="text-[9px] font-bold uppercase tracking-widest">Portal Oficial de Crédito</span>
+    <main>
+        <!-- Hero Section -->
+        <section class="pt-16 pb-20 md:pt-24 md:pb-28 relative overflow-hidden">
+            <div class="container mx-auto px-4 text-center">
+                <div class="inline-flex items-center gap-2 px-6 py-2.5 bg-white text-black rounded-full border-2 border-black mb-10">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    <span class="text-[11px] font-black uppercase tracking-widest">Crédito Exclusivo para CNPJ</span>
                 </div>
-                <h1 class="text-3xl md:text-5xl font-black text-slate-900 mb-4 tracking-tight leading-tight uppercase">
-                    O Capital que sua Empresa <br class="hidden md:block"> <span class="text-emerald-600">Merece, com Clareza.</span>
+                <h1 class="text-5xl md:text-7xl font-black text-black mb-8 tracking-tighter leading-[1.0]">
+                    Capital de Giro <br> <span class="text-emerald-600 underline decoration-black underline-offset-8">Rápido e Profissional.</span>
                 </h1>
-                <p class="text-slate-500 text-sm md:text-lg font-medium max-w-2xl mx-auto leading-relaxed">
-                    Crédito Institucional para expansão ou estoque. Sem adiantamentos e 100% transparente.
+                <p class="text-slate-600 text-lg md:text-xl font-bold max-w-2xl mx-auto leading-relaxed mb-12">
+                    Bordas marcadas e contraste total. Simule sem confusão.
                 </p>
+                
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
+                    <a href="#main-form" class="w-full sm:w-auto bg-emerald-600 text-white px-12 py-6 rounded-2xl font-black text-xs uppercase tracking-widest border-2 border-black hover:bg-emerald-700 shadow-xl transition-all active:scale-95">
+                        Fazer Simulação Agora
+                    </a>
+                </div>
             </div>
+        </section>
 
-            <!-- Simulator -->
-            <div class="max-w-6xl mx-auto mb-20">
-                <div class="bg-white rounded-[24px] md:rounded-[32px] overflow-hidden card-shadow border border-slate-100">
-                    <div class="grid lg:grid-cols-5">
-                        
-                        <!-- Left: Config -->
-                        <div class="lg:col-span-3 p-6 md:p-14 bg-white">
-                            <h2 class="text-lg md:text-xl font-extrabold text-slate-900 mb-8 md:mb-12 flex items-center gap-3">
-                                <span class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs md:text-sm font-black">1</span>
-                                SIMULADOR DE CRÉDITO
-                            </h2>
+        <!-- Formulário -->
+        <section id="main-form" class="pb-32 px-4 scroll-mt-32">
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-[40px] overflow-hidden border-4 border-black card-shadow relative">
+                    
+                    <!-- Progress Tracking -->
+                    <div class="h-4 bg-slate-200 border-b-2 border-black overflow-hidden">
+                        <div class="h-full bg-emerald-500 transition-all duration-700 ease-in-out border-r-2 border-black" 
+                             :style="`width: ${step * 25}%`"></div>
+                    </div>
 
-                            <div class="space-y-8 md:space-y-12">
-                                <div class="space-y-6">
-                                    <div class="flex flex-col md:flex-row md:justify-between md:items-end gap-2">
-                                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Valor Solicitado</label>
-                                        <div class="flex items-baseline gap-1 text-slate-900 border-b-2 border-slate-100 pb-2 focus-within:border-emerald-500 transition-colors">
-                                            <span class="text-lg font-bold">R$</span>
-                                            <input type="text" x-model="valorInput" @input="handleInput($event)" class="input-money text-3xl md:text-4xl w-full md:w-48">
+                    <div class="p-8 md:p-14">
+                        <header class="flex flex-col md:flex-row md:justify-between md:items-end gap-6 mb-12">
+                            <div>
+                                <div class="flex items-center gap-2 mb-4">
+                                    <span class="px-3 py-1 bg-black text-white rounded-lg text-[10px] font-black" x-text="`PASSO ${step} / 4`"></span>
+                                </div>
+                                <h2 class="text-4xl md:text-5xl font-black text-black tracking-tight" x-show="step === 1">Quanto você <br>deseja?</h2>
+                                <h2 class="text-4xl md:text-5xl font-black text-black tracking-tight" x-show="step === 2">Dados da <br>Empresa</h2>
+                                <h2 class="text-4xl md:text-5xl font-black text-black tracking-tight" x-show="step === 3">Seus Dados <br>de Contato</h2>
+                                <h2 class="text-4xl md:text-5xl font-black text-black tracking-tight" x-show="step === 4">Banco e <br>Recebimento</h2>
+                            </div>
+                            <div class="flex items-center gap-2 px-5 py-3 bg-white rounded-2xl border-2 border-black">
+                                <i data-lucide="shield-check" class="w-5 h-5 text-emerald-600"></i>
+                                <span class="text-[10px] font-black text-black uppercase tracking-widest">Segurança Total</span>
+                            </div>
+                        </header>
+
+                        <!-- ETAPA 1 -->
+                        <div x-show="step === 1" class="step-enter">
+                            <div class="space-y-12">
+                                <div>
+                                    <label class="label-field text-center">Digite o valor ou use a barra</label>
+                                    <div class="flex items-center gap-4 bg-white p-6 rounded-3xl border-4 border-black focus-within:border-emerald-600 transition-all mb-8">
+                                        <span class="text-4xl font-black text-emerald-600">R$</span>
+                                        <input type="text" x-model="valorInput" @input="handleValorInput" class="bg-transparent border-none outline-none font-black text-4xl md:text-6xl w-full text-black tracking-tight">
+                                    </div>
+                                    <div class="px-2">
+                                        <input type="range" x-model="valor" @input="syncSlider" min="10000" max="1000000" step="5000" class="w-full mb-4">
+                                        <div class="flex justify-between text-[12px] font-black text-black uppercase tracking-widest">
+                                            <span>Mín: 10k</span>
+                                            <span>Máx: 1 Milhão</span>
                                         </div>
                                     </div>
-                                    <input type="range" x-model.number="valor" min="5000" max="250000" step="1000" class="w-full">
-                                    <div class="flex justify-between text-[9px] font-bold text-slate-400 uppercase">
-                                        <span>Início: R$ 5.000</span>
-                                        <span>Limite: R$ 250.000</span>
-                                    </div>
                                 </div>
 
-                                <div class="space-y-4">
-                                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Escolha o Prazo</label>
-                                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
+                                <div>
+                                    <label class="label-field mb-6 block text-center">Selecione o Prazo</label>
+                                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                                         <template x-for="p in prazosPadrao">
-                                            <button @click="prazo = p" :class="prazo === p ? 'bg-emerald-600 text-white shadow-lg' : 'bg-slate-50 text-slate-600'" class="py-4 rounded-xl font-bold text-xs md:text-sm transition-all" x-text="p + ' Meses'"></button>
+                                            <button @click="prazo = p" 
+                                                    :class="prazo === p ? 'bg-emerald-600 text-white border-black scale-105 z-10' : 'text-black border-black hover:bg-slate-50'" 
+                                                    class="selectable-button">
+                                                <span class="text-2xl" x-text="p + 'x'"></span>
+                                                <span class="text-[10px] font-bold uppercase tracking-widest">Meses</span>
+                                            </button>
                                         </template>
-                                        <button @click="mostrarMaisPrazos = !mostrarMaisPrazos" class="bg-slate-100 border border-slate-200 text-slate-900 rounded-xl py-4 flex items-center justify-center hover:bg-slate-200 active:bg-slate-300 transition-all">
-                                            <i data-lucide="plus" class="w-6 h-6 transition-transform duration-300" :class="mostrarMaisPrazos ? 'rotate-45' : ''"></i>
+                                        <button @click="mostrarMaisPrazos = !mostrarMaisPrazos" 
+                                                :class="mostrarMaisPrazos ? 'bg-black text-white' : 'bg-white text-black border-black'"
+                                                class="selectable-button py-6 border-2">
+                                            <i data-lucide="plus" class="w-6 h-6" x-show="!mostrarMaisPrazos"></i>
+                                            <i data-lucide="minus" class="w-6 h-6" x-show="mostrarMaisPrazos"></i>
                                         </button>
                                     </div>
-                                    <div x-show="mostrarMaisPrazos" x-cloak x-transition class="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-3 pt-2">
+
+                                    <div x-show="mostrarMaisPrazos" x-transition class="grid grid-cols-3 gap-4 mt-4 p-4 bg-slate-100 rounded-3xl border-2 border-black">
                                         <template x-for="p in prazosExtras">
-                                            <button @click="prazo = p" :class="prazo === p ? 'bg-emerald-600 text-white shadow-lg' : 'bg-slate-100 text-slate-600'" class="py-4 rounded-xl font-bold text-xs md:text-sm transition-all" x-text="p + ' Meses'"></button>
+                                            <button @click="prazo = p; mostrarMaisPrazos = false" :class="prazo === p ? 'bg-emerald-600 text-white border-black' : 'bg-white text-black border-2 border-black'" class="py-4 rounded-xl font-black text-xs transition-all" x-text="p + ' Meses'"></button>
                                         </template>
                                     </div>
                                 </div>
 
-                                <div class="p-6 md:p-8 bg-slate-50 rounded-2xl border border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                                    <div>
-                                        <p class="text-[9px] md:text-[10px] text-slate-400 font-bold uppercase mb-1 tracking-widest">Parcela Mensal</p>
-                                        <p class="text-3xl md:text-4xl font-black text-emerald-600" x-text="formatCurrency(resultado.parcela)"></p>
+                                <div class="bg-black rounded-[32px] p-8 text-white flex flex-col md:flex-row justify-between items-center gap-8 border-2 border-black">
+                                    <div class="text-center md:text-left">
+                                        <p class="text-[11px] text-emerald-400 font-black uppercase mb-2 tracking-widest">Parcela Estimada</p>
+                                        <div class="flex items-baseline gap-2">
+                                            <span class="text-5xl font-black text-white" x-text="formatCurrency(resultado.parcela)"></span>
+                                            <span class="text-slate-400 text-sm font-bold uppercase">/mês</span>
+                                        </div>
                                     </div>
-                                    <div class="w-full md:w-auto md:text-right border-t md:border-t-0 md:border-l border-slate-200 pt-6 md:pt-0 md:pl-10">
-                                        <p class="text-[9px] md:text-[10px] text-slate-400 font-bold uppercase mb-1 tracking-widest">Custo Estimado Total</p>
-                                        <p class="text-lg md:text-xl font-bold text-slate-700" x-text="formatCurrency(resultado.total)"></p>
-                                    </div>
+                                    <button @click="proximoPasso()" :disabled="!canGoNext" class="w-full md:w-auto bg-emerald-600 text-white px-12 py-6 rounded-2xl font-black text-sm uppercase tracking-widest border-2 border-white hover:bg-emerald-500 disabled:opacity-30 transition-all flex items-center justify-center gap-3">
+                                        AVANÇAR <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Right: Form -->
-                        <div class="lg:col-span-2 p-6 md:p-14 bg-slate-900 text-white">
-                            <h2 class="text-lg md:text-xl font-extrabold mb-10 flex items-center gap-3 uppercase">
-                                <span class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-white/10 text-emerald-400 flex items-center justify-center text-xs md:text-sm">2</span>
-                                ANÁLISE SEGURA
-                            </h2>
-
-                            <div class="space-y-6">
-                                <div class="flex p-1 bg-white/5 rounded-xl border border-white/10">
-                                    <button @click="tipoDocumento = 'cnpj'" :class="tipoDocumento === 'cnpj' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-400'" class="flex-1 py-3 rounded-lg text-[10px] font-black uppercase transition">CNPJ</button>
-                                    <button @click="tipoDocumento = 'cpf'" :class="tipoDocumento === 'cpf' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-400'" class="flex-1 py-3 rounded-lg text-[10px] font-black uppercase transition">CPF</button>
+                        <!-- ETAPA 2 -->
+                        <div x-show="step === 2" class="step-enter" x-cloak>
+                            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                                <div>
+                                    <label class="label-field">CNPJ (Obrigatório)</label>
+                                    <input type="text" x-model="form.cnpj" @input="maskCNPJ" placeholder="00.000.000/0000-00" class="input-field">
                                 </div>
-
-                                <div class="space-y-4">
-                                    <div class="space-y-1.5">
-                                        <label class="text-[10px] font-bold text-slate-500 uppercase ml-2">Documento</label>
-                                        <input type="text" x-model="form.documento" :placeholder="tipoDocumento === 'cnpj' ? '00.000.000/0001-00' : '000.000.000-00'" class="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 text-sm focus:border-emerald-500 outline-none placeholder:text-slate-700">
+                                <div>
+                                    <label class="label-field">Data de Abertura</label>
+                                    <input type="date" x-model="form.dataAbertura" class="input-field">
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label class="label-field">Faturamento Médio Mensal</label>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+                                        <template x-for="f in ['Até R$ 50k', 'R$ 50k a R$ 250k', 'Acima de R$ 250k']">
+                                            <button @click="form.faturamentoFaixa = f" 
+                                                    :class="form.faturamentoFaixa === f ? 'bg-emerald-600 border-black text-white' : 'bg-white border-black text-black hover:bg-slate-50'" 
+                                                    class="py-5 border-2 rounded-2xl text-[11px] font-black transition-all uppercase tracking-widest" x-text="f"></button>
+                                        </template>
                                     </div>
-                                    <div class="space-y-1.5">
-                                        <label class="text-[10px] font-bold text-slate-500 uppercase ml-2">Instituição</label>
-                                        <select x-model="bancoPrincipal" class="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 text-sm focus:border-emerald-500 outline-none appearance-none cursor-pointer">
-                                            <option value="" class="bg-slate-900">Selecione seu banco</option>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center border-t-2 border-black pt-10">
+                                <button @click="voltarPasso()" class="flex items-center gap-2 text-black font-black uppercase text-[12px] hover:underline">
+                                    <i data-lucide="arrow-left" class="w-5 h-5"></i> Voltar
+                                </button>
+                                <button @click="proximoPasso()" :disabled="!canGoNext" class="bg-black text-white px-12 py-5 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-emerald-600 disabled:opacity-30 transition-all">Próximo Passo</button>
+                            </div>
+                        </div>
+
+                        <!-- ETAPA 3 -->
+                        <div x-show="step === 3" class="step-enter" x-cloak>
+                            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                                <div class="md:col-span-2">
+                                    <label class="label-field">Seu Nome Completo</label>
+                                    <input type="text" x-model="form.nomeCompleto" placeholder="Digite aqui..." class="input-field">
+                                </div>
+                                <div>
+                                    <label class="label-field">WhatsApp para Contato</label>
+                                    <input type="tel" x-model="form.telefone" @input="maskPhone" placeholder="(00) 00000-0000" class="input-field">
+                                </div>
+                                <div>
+                                    <label class="label-field">Seu E-mail</label>
+                                    <input type="email" x-model="form.email" placeholder="seu@email.com" class="input-field">
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center border-t-2 border-black pt-10">
+                                <button @click="voltarPasso()" class="flex items-center gap-2 text-black font-black uppercase text-[12px] hover:underline">
+                                    <i data-lucide="arrow-left" class="w-5 h-5"></i> Voltar
+                                </button>
+                                <button @click="proximoPasso()" :disabled="!canGoNext" class="bg-black text-white px-12 py-5 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-emerald-600 disabled:opacity-30 transition-all">Analisar Crédito</button>
+                            </div>
+                        </div>
+
+                        <!-- ETAPA 4 -->
+                        <div x-show="step === 4" class="step-enter" x-cloak>
+                            <div class="bg-emerald-600 p-8 rounded-[32px] text-white mb-10 border-4 border-black">
+                                <h4 class="text-2xl font-black uppercase mb-2">Quase lá!</h4>
+                                <p class="text-sm font-bold">Confirme onde sua empresa recebe os pagamentos para agilizar a liberação.</p>
+                            </div>
+
+                            <div class="grid md:grid-cols-2 gap-8 mb-10">
+                                <div>
+                                    <label class="label-field">Banco Principal</label>
+                                    <div class="relative">
+                                        <select x-model="form.bancoRecebimentoPJ" class="input-field appearance-none pr-12">
                                             <template x-for="b in bancosInstituicoes">
-                                                <option :value="b" x-text="b" class="bg-slate-900 text-white"></option>
+                                                <option :value="b" x-text="b"></option>
                                             </template>
                                         </select>
-                                    </div>
-                                    <div class="space-y-1.5">
-                                        <label class="text-[10px] font-bold text-slate-500 uppercase ml-2">WhatsApp</label>
-                                        <input type="text" x-model="form.whatsapp" placeholder="(00) 00000-0000" class="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 text-sm focus:border-emerald-500 outline-none placeholder:text-slate-700">
+                                        <i data-lucide="chevron-down" class="absolute right-5 top-1/2 -translate-y-1/2 w-6 h-6 text-black pointer-events-none"></i>
                                     </div>
                                 </div>
+                                <div>
+                                    <label class="label-field">Tempo de Conta PJ</label>
+                                    <div class="relative">
+                                        <select x-model="form.tempoContaPJ" class="input-field appearance-none pr-12">
+                                            <option value="6m">Menos de 1 ano</option>
+                                            <option value="1y">Entre 1 e 3 anos</option>
+                                            <option value="3y">Mais de 3 anos</option>
+                                        </select>
+                                        <i data-lucide="chevron-down" class="absolute right-5 top-1/2 -translate-y-1/2 w-6 h-6 text-black pointer-events-none"></i>
+                                    </div>
+                                </div>
+                            </div>
 
-                                <button @click="enviarPedido()" :disabled="processando" :class="(!form.documento || !form.whatsapp || !bancoPrincipal) ? 'opacity-50' : 'hover:bg-emerald-500'" class="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black text-sm uppercase flex items-center justify-center gap-3 transition-all shadow-xl shadow-emerald-900/20">
-                                    <span x-show="!processando">SOLICITAR AGORA</span>
-                                    <i x-show="processando" data-lucide="refresh-cw" class="animate-spin w-4 h-4"></i>
+                            <div class="space-y-8">
+                                <div class="flex items-start gap-5 p-6 bg-slate-50 rounded-2xl border-2 border-black cursor-pointer hover:bg-emerald-50 transition-all" @click="aceitouTermos = !aceitouTermos">
+                                    <input type="checkbox" x-model="aceitouTermos" class="w-8 h-8 accent-black cursor-pointer mt-1 border-2 border-black">
+                                    <label class="text-[12px] font-black text-black uppercase leading-tight cursor-pointer select-none">
+                                        Confirmo que as informações são verdadeiras e autorizo a análise de crédito corporativo.
+                                    </label>
+                                </div>
+
+                                <button @click="enviarPedido()" :disabled="!aceitouTermos || processando" class="w-full bg-emerald-600 text-white py-8 rounded-3xl font-black text-sm uppercase tracking-widest border-4 border-black transition-all hover:bg-emerald-500 active:scale-95 flex items-center justify-center gap-5 disabled:opacity-40 shadow-2xl">
+                                    <span x-show="!processando">FINALIZAR E RECEBER PROPOSTA</span>
+                                    <i x-show="processando" data-lucide="loader-2" class="animate-spin w-8 h-8"></i>
+                                    <i x-show="!processando" data-lucide="send" class="w-7 h-7"></i>
                                 </button>
+                                <p class="text-center text-[11px] font-black text-black uppercase tracking-widest">Retorno rápido via WhatsApp em instantes</p>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
-
-            <!-- Depoimentos (34 Comentários) -->
-            <section class="py-12 md:py-20 border-t border-slate-100">
-                <div class="text-center mb-12">
-                    <h3 class="text-2xl md:text-3xl font-black text-slate-900 uppercase tracking-tight">O que nossos clientes dizem</h3>
-                    <p class="text-slate-500 text-sm mt-2">Transparência e confiança em cada operação de crédito.</p>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <template x-for="d in depoimentos">
-                        <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
-                            <div class="flex gap-1 mb-3">
-                                <i data-lucide="star" class="w-3 h-3 text-amber-400 fill-amber-400"></i>
-                                <i data-lucide="star" class="w-3 h-3 text-amber-400 fill-amber-400"></i>
-                                <i data-lucide="star" class="w-3 h-3 text-amber-400 fill-amber-400"></i>
-                                <i data-lucide="star" class="w-3 h-3 text-amber-400 fill-amber-400"></i>
-                                <i data-lucide="star" class="w-3 h-3 text-amber-400 fill-amber-400"></i>
-                            </div>
-                            <p class="text-slate-600 text-xs leading-relaxed mb-4" x-text="d.texto"></p>
-                            <div class="flex items-center gap-3 pt-3 border-t border-slate-50">
-                                <div class="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center font-bold text-[10px] text-slate-500 uppercase" x-text="d.nome[0]"></div>
-                                <div>
-                                    <p class="text-[11px] font-bold text-slate-900" x-text="d.nome"></p>
-                                    <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wider" x-text="d.cargo + ' • ' + d.local"></p>
-                                </div>
-                            </div>
-                        </div>
-                    </template>
-                </div>
-            </section>
-
-        </div>
+        </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-white pt-16 pb-8 border-t border-slate-100">
-        <div class="container mx-auto px-4 md:px-6">
-            <div class="text-center mb-10">
-                <p class="text-[9px] md:text-[10px] text-slate-400 uppercase font-black tracking-[0.3em] mb-4">AprovaçãoElite — Correspondente Bancário Oficial</p>
-                <p class="text-[9px] text-slate-400 max-w-2xl mx-auto leading-relaxed">
-                    Operamos sob as diretrizes do Banco Central (Res. 3.954). Nunca pedimos senhas ou transferências antecipadas. Exemplo: R$ 50 mil em 24x de R$ 2.438,45. Taxas a partir de 1,29% a.m. sujeito a análise.
-                </p>
-            </div>
+    <footer class="bg-black text-white py-12 px-4 border-t-4 border-emerald-600">
+        <div class="container mx-auto text-center">
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">© 2024 Aprovação Elite - Todos os direitos reservados</p>
+            <p class="text-[9px] text-slate-500 max-w-2xl mx-auto leading-relaxed">
+                A Aprovação Elite atua como correspondente bancário. Não somos uma instituição financeira. A análise de crédito e as taxas de juros são de responsabilidade da instituição parceira.
+            </p>
         </div>
     </footer>
 
