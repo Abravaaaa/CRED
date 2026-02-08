@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AprovaçãoElite | Crédito Corporativo Transparente</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        function creditoApp() {
+            return {
+                scrolled: false,
+                valor: 75000.00,
+                prazo: 24,
+                setor: 'varejo',
+                bancoPrincipal: '',
+                tipoDocumento: 'cnpj',
+                mostrarMaisPrazos: false,
+                whatsappNum: '5511954802338',
+                processando: false,
+                
+                form: {
+                    documento: '',
+                    whatsapp: ''
+                },
+
+                bancosInstituicoes: [
+                    'Itaú PJ', 'Bradesco PJ', 'Santander PJ', 'Banco do Brasil', 'Caixa PJ', 
+                    'Nubank Business', 'Inter Empresas', 'Stone (Maquininha)', 'PagBank/PagSeguro', 
+                    'Mercado Pago', 'C6 Bank', 'BTG Pactual', 'Safra Empresas', 'Cora', 'Sicoob'
+                ],
+
+                prazosPadrao: [12, 24, 36],
+                prazosExtras: [48, 60, 72],
+
+                depoimentos: [
+                    { nome: "Marcelo Junqueira", local: "São Paulo, SP", texto: "Processo extremamente profissional. O simulador bate exatamente com o contrato assinado via Docusign.", cargo: "Franqueado" },
+                    { nome: "Ana Cláudia Souza", local: "Curitiba, PR", texto: "O fato de não pedirem nada antecipado me deu a confiança que eu precisava. Crédito liberado rápido.", cargo: "E-commerce" },
+                    { nome: "Felipe Guedes", local: "Belo Horizonte, MG", texto: "Fiz a simulação e em poucas horas um consultor especializado me chamou. Transparência nota 10.", cargo: "Logística" }
+                ],
+
+                init() {
+                    window.addEventListener('scroll', () => {
+                        this.scrolled = window.scrollY > 50;
+                    });
+                    this.$watch('valor', (val) => {
+                        if (val > 250000) this.valor = 250000;
+                        if (val < 5000) this.valor = 5000;
+                    });
+                    if (window.lucide) window.lucide.createIcons();
+                },
+
+                formatCurrency(v) {
+                    return new Intl.NumberFormat('pt-BR', { 
+                        style: 'currency', 
+                        currency: 'BRL',
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2 
+                    }).format(v);
+                },
+
+                get resultado() {
+                    const taxaMensal = 0.0129;
+                    const n = parseInt(this.prazo);
+                    const p = parseFloat(this.valor) || 0;
+                    const parcela = (p * taxaMensal * Math.pow(1 + taxaMensal, n)) / (Math.pow(1 + taxaMensal, n) - 1);
+                    return { parcela: parcela || 0, total: (parcela * n) || 0 };
+                },
+
+                enviarPedido() {
+                    if (!this.form.documento || !this.form.whatsapp || !this.bancoPrincipal) {
+                        alert('Por favor, preencha todos os campos para garantirmos a sua análise segura.');
+                        return;
+                    }
+                    
+                    this.processando = true;
+                    
+                    setTimeout(() => {
+                        const msg = `*SOLICITAÇÃO DE CRÉDITO - PROTOCOLO ${Math.floor(Math.random() * 900000) + 100000}*%0A%0A` +
+                            `*DETALHES DA PROPOSTA:*%0A` +
+                            `- Valor Solicitado: ${this.formatCurrency(this.valor)}%0A` +
+                            `- Prazo: ${this.prazo} meses%0A` +
+                            `- Parcela Estimada: ${this.formatCurrency(this.resultado.parcela)}%0A%0A` +
+                            `*DADOS DE ANÁLISE:*%0A` +
+                            `- ${this.tipoDocumento.toUpperCase()}: ${this.form.documento}%0A` +
+                            `- Instituição: ${this.bancoPrincipal}%0A%0A` +
+                            `_Ambiente Seguro Verificado._`;
+
+                        window.open(`https://wa.me/${this.whatsappNum}?text=${msg}`, '_blank');
+                        this.processando = false;
+                    }, 1800);
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: #f8fafc; color: #1e293b; }
+        .text-finance { color: #0f172a; }
+        .accent-finance { color: #059669; }
+        .bg-finance { background-color: #059669; }
+        .card-shadow { box-shadow: 0 20px 50px -12px rgba(15, 23, 42, 0.08); }
+        
+        /* Custom range styling */
+        input[type=range] { -webkit-appearance: none; background: transparent; }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 6px; cursor: pointer; background: #e2e8f0; border-radius: 10px; }
+        input[type=range]::-webkit-slider-thumb { height: 24px; width: 24px; border-radius: 50%; background: #059669; cursor: pointer; -webkit-appearance: none; margin-top: -9px; box-shadow: 0 4px 10px rgba(5, 150, 105, 0.3); border: 3px solid white; }
+        
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body x-data="creditoApp()" class="antialiased">
+
+    <!-- Top Security Bar -->
+    <div class="bg-slate-900 py-2.5">
+        <div class="container mx-auto px-6 flex justify-center md:justify-between items-center text-[11px] font-semibold tracking-wide text-slate-300 uppercase">
+            <span class="flex items-center gap-2"><i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i> Conexão Segura SSL 256-bit</span>
+            <span class="hidden md:block">Correspondente Bancário Autorizado • Resolução 3.954 BACEN</span>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 w-full z-[100] transition-all duration-300" 
+         :class="scrolled ? 'bg-white/90 backdrop-blur-md border-b border-slate-100 py-3 shadow-sm' : 'bg-white py-5'">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center shadow-lg shadow-emerald-600/20">
+                    <i data-lucide="trending-up" class="text-white w-6 h-6"></i>
+                </div>
+                <div>
+                    <span class="text-xl font-extrabold text-slate-900 tracking-tight block leading-none uppercase">Aprovação<span class="text-emerald-600 font-light">Elite</span></span>
+                    <span class="text-[9px] text-slate-400 font-bold uppercase tracking-[0.2em]">Crédito Institucional</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <div class="hidden md:flex items-center gap-6 mr-6 border-r border-slate-100 pr-6">
+                    <span class="text-[11px] font-bold text-slate-500 uppercase flex items-center gap-1"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-500"></i> Taxas a partir de 1.29%</span>
+                    <span class="text-[11px] font-bold text-slate-500 uppercase flex items-center gap-1"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-500"></i> Sem Adiantamentos</span>
+                </div>
+                <a href="https://wa.me/5511954802338" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-full text-xs font-bold transition-all shadow-md">
+                    ATENDIMENTO
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="py-16 md:py-24">
+        <div class="container mx-auto px-6">
+            <!-- Hero Section -->
+            <div class="max-w-4xl mx-auto text-center mb-16">
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full border border-emerald-100 mb-6 shadow-sm">
+                    <i data-lucide="verified" class="w-4 h-4"></i>
+                    <span class="text-[10px] font-bold uppercase tracking-widest">Portal Oficial de Crédito Seguro</span>
+                </div>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 mb-6 tracking-tight">
+                    O Capital que sua Empresa <br> <span class="text-emerald-600">Merece, com Transparência.</span>
+                </h1>
+                <p class="text-slate-500 text-lg md:text-xl font-medium max-w-2xl mx-auto leading-relaxed">
+                    Crédito rápido para giro, expansão ou estoque. Sem letras miúdas, sem taxas ocultas e 100% digital.
+                </p>
+            </div>
+
+            <!-- Simulator Card -->
+            <div class="max-w-6xl mx-auto">
+                <div class="bg-white rounded-[32px] overflow-hidden card-shadow border border-slate-100">
+                    <div class="grid lg:grid-cols-5">
+                        
+                        <!-- Simulation Column -->
+                        <div class="lg:col-span-3 p-8 md:p-14 bg-white">
+                            <h2 class="text-xl font-extrabold text-slate-900 mb-12 flex items-center gap-3">
+                                <span class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-sm">1</span>
+                                Configure seu Crédito
+                            </h2>
+
+                            <div class="space-y-12">
+                                <!-- Valor -->
+                                <div class="space-y-6">
+                                    <div class="flex justify-between items-end">
+                                        <label class="text-xs font-bold text-slate-400 uppercase tracking-widest">Valor do Empréstimo</label>
+                                        <div class="flex items-baseline gap-1 text-slate-900">
+                                            <span class="text-lg font-bold">R$</span>
+                                            <input type="number" x-model.number="valor" step="0.01" class="bg-transparent text-4xl font-black focus:outline-none w-48 text-right">
+                                        </div>
+                                    </div>
+                                    <input type="range" x-model.number="valor" min="5000" max="250000" step="100" class="w-full">
+                                    <div class="flex justify-between text-[10px] font-bold text-slate-400 uppercase">
+                                        <span>Mín: R$ 5.000,00</span>
+                                        <span>Máx: R$ 250.000,00</span>
+                                    </div>
+                                </div>
+
+                                <!-- Prazos -->
+                                <div class="space-y-4">
+                                    <label class="text-xs font-bold text-slate-400 uppercase tracking-widest">Prazo de Pagamento</label>
+                                    <div class="grid grid-cols-3 md:grid-cols-4 gap-3">
+                                        <template x-for="p in prazosPadrao">
+                                            <button @click="prazo = p" :class="prazo === p ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-200' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'" class="py-4 rounded-xl font-bold text-sm transition" x-text="p + ' Meses'"></button>
+                                        </template>
+                                        <button @click="mostrarMaisPrazos = !mostrarMaisPrazos" class="bg-white border-2 border-dashed border-slate-200 text-slate-400 hover:border-emerald-300 hover:text-emerald-600 rounded-xl font-bold transition">
+                                            <i data-lucide="plus" class="w-5 h-5 mx-auto"></i>
+                                        </button>
+                                    </div>
+                                    <div x-show="mostrarMaisPrazos" x-cloak x-transition class="grid grid-cols-3 gap-3 pt-2">
+                                        <template x-for="p in prazosExtras">
+                                            <button @click="prazo = p" :class="prazo === p ? 'bg-emerald-600 text-white shadow-lg' : 'bg-slate-50 text-slate-600'" class="py-4 rounded-xl font-bold text-sm transition" x-text="p + ' Meses'"></button>
+                                        </template>
+                                    </div>
+                                </div>
+
+                                <!-- Result Area -->
+                                <div class="p-8 bg-slate-50 rounded-3xl border border-slate-100 flex flex-col md:flex-row justify-between items-center gap-8">
+                                    <div>
+                                        <p class="text-[10px] text-slate-400 font-bold uppercase mb-1 tracking-widest">Parcela Mensal Estimada</p>
+                                        <p class="text-4xl font-black text-emerald-600" x-text="formatCurrency(resultado.parcela)"></p>
+                                    </div>
+                                    <div class="text-right border-t md:border-t-0 md:border-l border-slate-200 pt-6 md:pt-0 md:pl-10">
+                                        <p class="text-[10px] text-slate-400 font-bold uppercase mb-1 tracking-widest">Custo Total (Estimado)</p>
+                                        <p class="text-xl font-bold text-slate-700" x-text="formatCurrency(resultado.total)"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Column -->
+                        <div class="lg:col-span-2 p-8 md:p-14 bg-slate-900 text-white">
+                            <h2 class="text-xl font-extrabold mb-10 flex items-center gap-3">
+                                <span class="w-8 h-8 rounded-full bg-white/10 text-emerald-400 flex items-center justify-center text-sm">2</span>
+                                Análise Prioritária
+                            </h2>
+
+                            <div class="space-y-6">
+                                <div class="flex p-1 bg-white/5 rounded-xl border border-white/10">
+                                    <button @click="tipoDocumento = 'cnpj'" :class="tipoDocumento === 'cnpj' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-400 hover:text-white'" class="flex-1 py-3 rounded-lg text-[10px] font-black uppercase transition">Pessoa Jurídica</button>
+                                    <button @click="tipoDocumento = 'cpf'" :class="tipoDocumento === 'cpf' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-400 hover:text-white'" class="flex-1 py-3 rounded-lg text-[10px] font-black uppercase transition">Pessoa Física</button>
+                                </div>
+
+                                <div class="space-y-4">
+                                    <div class="space-y-1.5">
+                                        <label class="text-[10px] font-bold text-slate-500 uppercase ml-2">Documento de Identificação</label>
+                                        <input type="text" x-model="form.documento" :placeholder="tipoDocumento === 'cnpj' ? '00.000.000/0001-00' : '000.000.000-00'" class="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 text-sm focus:border-emerald-500 outline-none transition placeholder:text-slate-700">
+                                    </div>
+
+                                    <div class="space-y-1.5">
+                                        <label class="text-[10px] font-bold text-slate-500 uppercase ml-2">Banco de Relacionamento</label>
+                                        <select x-model="bancoPrincipal" class="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 text-sm focus:border-emerald-500 outline-none appearance-none cursor-pointer">
+                                            <option value="" class="bg-slate-900">Selecione uma Instituição</option>
+                                            <template x-for="b in bancosInstituicoes">
+                                                <option :value="b" x-text="b" class="bg-slate-900 text-white"></option>
+                                            </template>
+                                        </select>
+                                    </div>
+
+                                    <div class="space-y-1.5">
+                                        <label class="text-[10px] font-bold text-slate-500 uppercase ml-2">Telefone de Contato</label>
+                                        <input type="text" x-model="form.whatsapp" placeholder="(00) 00000-0000" class="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 text-sm focus:border-emerald-500 outline-none transition placeholder:text-slate-700">
+                                    </div>
+                                </div>
+
+                                <button @click="enviarPedido()" :disabled="processando" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-5 rounded-2xl font-black text-sm uppercase tracking-widest flex items-center justify-center gap-3 transition-all transform active:scale-[0.98] shadow-xl shadow-emerald-900/20">
+                                    <span x-show="!processando" class="flex items-center gap-2">SOLICITAR APROVAÇÃO <i data-lucide="chevron-right" class="w-4 h-4"></i></span>
+                                    <span x-show="processando" class="flex items-center gap-2">
+                                        <i data-lucide="refresh-cw" class="animate-spin w-4 h-4"></i> PROCESSANDO SEGURAMENTE...
+                                    </span>
+                                </button>
+
+                                <div class="flex items-center justify-center gap-6 pt-4 text-slate-500">
+                                    <div class="flex items-center gap-1.5">
+                                        <i data-lucide="lock" class="w-3 h-3"></i>
+                                        <span class="text-[9px] font-bold uppercase tracking-widest">AES-256</span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5">
+                                        <i data-lucide="eye-off" class="w-3 h-3"></i>
+                                        <span class="text-[9px] font-bold uppercase tracking-widest">Sigilo Total</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Features -->
+            <div class="mt-32 grid md:grid-cols-3 gap-12 max-w-5xl mx-auto">
+                <div class="flex gap-5">
+                    <div class="flex-shrink-0 w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-slate-100">
+                        <i data-lucide="shield-check" class="text-emerald-600"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-extrabold text-slate-900 mb-2">Zero Custo Antecipado</h4>
+                        <p class="text-sm text-slate-500 leading-relaxed">Não cobramos taxas para análise ou liberação. Acompanhamos as normas de segurança do BACEN.</p>
+                    </div>
+                </div>
+                <div class="flex gap-5">
+                    <div class="flex-shrink-0 w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-slate-100">
+                        <i data-lucide="badge-check" class="text-emerald-600"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-extrabold text-slate-900 mb-2">Formalização Digital</h4>
+                        <p class="text-sm text-slate-500 leading-relaxed">Contratos assinados via Gov.br ou plataformas certificadas, com validade jurídica em todo território nacional.</p>
+                    </div>
+                </div>
+                <div class="flex gap-5">
+                    <div class="flex-shrink-0 w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-slate-100">
+                        <i data-lucide="landmark" class="text-emerald-600"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-extrabold text-slate-900 mb-2">Registro de Operação</h4>
+                        <p class="text-sm text-slate-500 leading-relaxed">Todas as simulações e pedidos geram um protocolo de atendimento registrado em nosso sistema.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Social Proof -->
+    <section class="py-24 bg-slate-50 border-y border-slate-100">
+        <div class="container mx-auto px-6">
+            <h3 class="text-2xl font-black text-center text-slate-900 mb-16">Histórias de Sucesso</h3>
+            <div class="grid md:grid-cols-3 gap-8">
+                <template x-for="d in depoimentos">
+                    <div class="bg-white p-10 rounded-3xl card-shadow border border-slate-200/50">
+                        <div class="flex gap-1 mb-6">
+                            <i data-lucide="star" class="w-4 h-4 text-amber-400 fill-amber-400"></i>
+                            <i data-lucide="star" class="w-4 h-4 text-amber-400 fill-amber-400"></i>
+                            <i data-lucide="star" class="w-4 h-4 text-amber-400 fill-amber-400"></i>
+                            <i data-lucide="star" class="w-4 h-4 text-amber-400 fill-amber-400"></i>
+                            <i data-lucide="star" class="w-4 h-4 text-amber-400 fill-amber-400"></i>
+                        </div>
+                        <p class="text-slate-600 text-sm italic mb-8 leading-relaxed" x-text="'&quot;' + d.texto + '&quot;'"></p>
+                        <div class="flex items-center gap-4 border-t border-slate-50 pt-6">
+                            <div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center font-bold text-slate-500" x-text="d.nome[0]"></div>
+                            <div>
+                                <p class="text-xs font-bold text-slate-900" x-text="d.nome"></p>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider" x-text="d.cargo + ' • ' + d.local"></p>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white pt-24 pb-12">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-12 mb-16 border-b border-slate-100 pb-16">
+                <div class="col-span-2">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-8 h-8 bg-emerald-600 rounded flex items-center justify-center">
+                            <i data-lucide="trending-up" class="text-white w-5 h-5"></i>
+                        </div>
+                        <span class="text-lg font-black uppercase text-slate-900">Aprovação<span class="text-emerald-600 font-light">Elite</span></span>
+                    </div>
+                    <p class="text-slate-400 text-xs leading-loose max-w-sm">
+                        AprovaçãoElite — Correspondente Bancário Oficial. Atuamos como facilitadores de crédito institucional, unindo tecnologia e segurança para o crescimento sustentável do seu negócio.
+                    </p>
+                </div>
+                <div>
+                    <h5 class="text-[11px] font-black uppercase mb-6 tracking-widest text-slate-900">Institucional</h5>
+                    <ul class="space-y-4 text-[11px] font-bold text-slate-400">
+                        <li><a href="#" class="hover:text-emerald-600">Políticas de Segurança</a></li>
+                        <li><a href="#" class="hover:text-emerald-600">LGPD & Privacidade</a></li>
+                        <li><a href="#" class="hover:text-emerald-600">Termos de Serviço</a></li>
+                        <li><a href="#" class="hover:text-emerald-600">Canal de Ética</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-[11px] font-black uppercase mb-6 tracking-widest text-slate-900">Canais Digitais</h5>
+                    <ul class="space-y-4 text-[11px] font-bold text-slate-400">
+                        <li class="flex items-center gap-2 text-emerald-600"><i data-lucide="phone" class="w-3.5 h-3.5"></i> (11) 95480-2338</li>
+                        <li class="flex items-center gap-2"><i data-lucide="mail" class="w-3.5 h-3.5"></i> suporte@aprovacaoelite.com.br</li>
+                        <li class="flex items-center gap-2"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> Av. Paulista, 1106 - São Paulo</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="flex gap-8 grayscale opacity-40">
+                    <span class="text-[10px] font-bold text-slate-900">PROTOCOLO SSL</span>
+                    <span class="text-[10px] font-bold text-slate-900">LGPD 2024</span>
+                    <span class="text-[10px] font-bold text-slate-900">BACEN REG.</span>
+                </div>
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+                    © 2024 AprovaçãoElite — CNPJ 00.000.000/0001-00
+                </p>
+            </div>
+            
+            <div class="mt-12 p-8 bg-slate-50 rounded-2xl border border-slate-100">
+                <p class="text-[10px] text-slate-400 leading-relaxed text-center">
+                    A AprovaçãoElite é um correspondente bancário digital (Resolução nº 3.954 do BACEN). Não realizamos operações de crédito diretamente. Taxas de juros, prazos e condições variam de acordo com o perfil de crédito de cada cliente. Exemplo: R$ 50.000,00 em 24 meses, parcela de R$ 2.438,00. Nunca solicitamos qualquer tipo de depósito ou pagamento antecipado para análise ou liberação de crédito. Denuncie tentativas de fraude.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
